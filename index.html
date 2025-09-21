@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri Dashboard Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url('agribackground.jpg') no-repeat center/cover;
+    }
+
+    .login-container {
+      background: rgba(34, 139, 34, 0.3);
+      padding: 40px;
+      border-radius: 15px;
+      width: 350px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #eaffea;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #f5fff5;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .input-group input::placeholder {
+      color: #d9f2d9;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #28a745, #218838);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      transform: scale(1.03);
+    }
+
+    .extra-links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .extra-links a {
+      color: #b0ffb0;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    #registerForm {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2 id="formTitle">Agri Dashboard Login</h2>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="loginUsername">Username</label>
+        <input type="text" id="loginUsername" placeholder="Enter your username" required>
+      </div>
+      <div class="input-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+      <div class="extra-links">
+        <a id="showRegister">Sign Up</a>
+      </div>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm">
+      <div class="input-group">
+        <label for="regUsername">Username</label>
+        <input type="text" id="regUsername" placeholder="Choose a username" required>
+      </div>
+      <div class="input-group">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" placeholder="Choose a password" required>
+      </div>
+      <button type="submit" class="login-btn">Register</button>
+      <div class="extra-links">
+        <a id="showLogin">Back to Login</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const formTitle = document.getElementById("formTitle");
+    const showRegister = document.getElementById("showRegister");
+    const showLogin = document.getElementById("showLogin");
+
+    // Show register form
+    showRegister.addEventListener("click", () => {
+      loginForm.style.display = "none";
+      registerForm.style.display = "block";
+      formTitle.innerText = "Create Account";
+    });
+
+    // Show login form
+    showLogin.addEventListener("click", () => {
+      registerForm.style.display = "none";
+      loginForm.style.display = "block";
+      formTitle.innerText = "Agri Dashboard Login";
+    });
+
+    // Handle Registration
+    registerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("regUsername").value;
+      const password = document.getElementById("regPassword").value;
+
+      localStorage.setItem(username, password);
+
+      alert("Registration successful! You can now login.");
+      registerForm.reset();
+      registerForm.style.display = "none";
+      loginForm.style.display = "block";
+      formTitle.innerText = "Agri Dashboard Login";
+    });
+
+    // Handle Login
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("loginUsername").value;
+      const password = document.getElementById("loginPassword").value;
+
+      const storedPassword = localStorage.getItem(username);
+
+      if (storedPassword && storedPassword === password) {
+        alert("Login successful! Welcome " + username);
+        loginForm.reset();
+
+        // Save logged-in user in session
+        sessionStorage.setItem("loggedInUser", username);
+
+        // Redirect to dashboard
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Invalid username or password!");
+      }
+    });
+  </script>
+</body>
+</html>
